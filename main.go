@@ -77,7 +77,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		case "weather":
 			var location string
 
-			for i := 1; i > len(commandContents); i++ {
+			for i := 1; i < len(commandContents); i++ {
 				location += commandContents[i] + " "
 			}
 
