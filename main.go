@@ -2,8 +2,11 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"strings"
 	"time"
+
+	weather "github.com/gidoBOSSftw5731/goweather"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/gidoBOSSftw5731/log"
@@ -11,7 +14,8 @@ import (
 
 var (
 	botID         string
-	token         = flag.String("token", "", "Discord bot secret")
+	discordToken  = flag.String("token", "", "Discord bot secret")
+	apiToken      = flag.String("apikey", "", "openweathermap api key")
 	commandPrefix = "!"
 )
 
@@ -19,7 +23,7 @@ func main() {
 	flag.Parse()
 	log.SetCallDepth(4)
 	//log.Tracef("Token is: %v", *token)
-	discord, err := discordgo.New("Bot " + *token)
+	discord, err := discordgo.New("Bot " + *discordToken)
 	errCheck("error creating discord session", err)
 	user, err := discord.User("@me")
 	errCheck("error retrieving account", err)
@@ -72,6 +76,18 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 
 		switch strings.Split(command, " ")[0] {
 		case "weather":
+			var location string
+
+			for i := 1; i > len(commandContents); i++ {
+				location += commandContents[i] + " "
+			}
+
+			w, err := weather.CurrentWeather(location, *apiToken)
+			if err != nil {
+				log.Errorln("Error gathering current weather: ", err)
+				discord.ChannelMessageSend(message.ChannelID, "Internal Error! \n"+fmt.Sprint(err))
+				return
+			}
 
 			embed := &discordgo.MessageEmbed{
 				Author:      &discordgo.MessageEmbedAuthor{},
@@ -80,12 +96,12 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 				Fields: []*discordgo.MessageEmbedField{
 					&discordgo.MessageEmbedField{
 						Name:   "tempuature",
-						Value:  "weather.Temp",
+						Value:  fmt.Sprint(w.Main.Temp),
 						Inline: true,
 					},
 					&discordgo.MessageEmbedField{
-						Name:   "Weth",
-						Value:  "weather.Weth",
+						Name:   "Wind Speed",
+						Value:  fmt.Sprint(w.Wind.Speed),
 						Inline: true,
 					},
 				},
