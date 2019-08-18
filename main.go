@@ -2,11 +2,8 @@ package main
 
 import (
 	"flag"
-	"regexp"
 	"strings"
 	"time"
-
-	"github.com/gidoBOSSftw5731/yahooweather"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/gidoBOSSftw5731/log"
@@ -76,41 +73,6 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		switch strings.Split(command, " ")[0] {
 		case "weather":
 
-			isZipcode, err := regexp.MatchString("^\\d{5}(?:[\\s]\\d{4})?$",
-				commandContents[1])
-			if err != nil {
-				log.Errorln(err)
-				discord.ChannelMessageSend(message.ChannelID, "Error in Regex!")
-				return
-			}
-
-			var loc *yahooweather.Location
-
-			if isZipcode {
-				loc = yahooweather.BuildLocation("", "", commandContents[1])
-			} else {
-				cleanString := strings.TrimPrefix(message.Content,
-					commandPrefix+command+" ")
-				cleanString = strings.Replace(cleanString, ",", "", 0)
-				split := strings.Split(cleanString, " ")
-
-				if len(split) < 2 {
-					log.Errorln("didnt supply both a city and state")
-					discord.ChannelMessageSend(message.ChannelID, "Error in formatting!")
-					return
-				}
-
-				loc = yahooweather.BuildLocation(split[0], split[1], "")
-			}
-
-			url := yahooweather.BuildUrl(loc)
-
-			log.Traceln(url)
-
-			weather := yahooweather.MakeQuery(url)
-
-			log.Debugln(weather)
-
 			embed := &discordgo.MessageEmbed{
 				Author:      &discordgo.MessageEmbedAuthor{},
 				Color:       0x00ff00, // Green
@@ -118,12 +80,12 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 				Fields: []*discordgo.MessageEmbedField{
 					&discordgo.MessageEmbedField{
 						Name:   "tempuature",
-						Value:  weather.Temp,
+						Value:  "weather.Temp",
 						Inline: true,
 					},
 					&discordgo.MessageEmbedField{
 						Name:   "Weth",
-						Value:  weather.Weth,
+						Value:  "weather.Weth",
 						Inline: true,
 					},
 				},
