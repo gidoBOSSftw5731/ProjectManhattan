@@ -87,6 +87,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 				discord.ChannelMessageSend(message.ChannelID, "Internal Error! \n"+fmt.Sprint(err))
 				return
 			}
+			log.Traceln(w)
 
 			embed := &discordgo.MessageEmbed{
 				Author:      &discordgo.MessageEmbedAuthor{},
