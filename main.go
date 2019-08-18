@@ -92,7 +92,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 			embed := &discordgo.MessageEmbed{
 				Author:      &discordgo.MessageEmbedAuthor{},
 				Color:       0x00ff00, // Green
-				Description: "This is a discordgo embed",
+				Description: "All measurements in metric",
 				Fields: []*discordgo.MessageEmbedField{
 					&discordgo.MessageEmbedField{
 						Name:   "tempuature",
