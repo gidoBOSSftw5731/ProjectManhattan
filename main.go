@@ -63,7 +63,8 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 
 	//fmt.Printf("Message: %+v || From: %s\n", message.Message, message.Author)
 
-	if !strings.HasPrefix(commandPrefix, message.Content) {
+	if message.Content[:len(commandPrefix)] == commandPrefix {
+		println("foo")
 		command := strings.Split(message.Content, commandPrefix)[1]
 		commandContents := strings.Split(message.Content, " ") // 0 = !command, 1 = first arg, etc
 		if len(commandContents) < 2 {
