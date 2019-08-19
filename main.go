@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 
@@ -92,7 +93,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 			embed := &discordgo.MessageEmbed{
 				Title:       fmt.Sprintf("Weather in %v (%v, %v) right now", w.Name, w.Coord.Lat, w.Coord.Lon),
 				Author:      &discordgo.MessageEmbedAuthor{},
-				Color:       0x00ff00, // Green
+				Color:       rand.Intn(16777215), // Green
 				Description: "All measurements in metric",
 				Fields: []*discordgo.MessageEmbedField{
 					&discordgo.MessageEmbedField{
