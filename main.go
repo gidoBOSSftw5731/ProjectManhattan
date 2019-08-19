@@ -17,7 +17,7 @@ var (
 	botID         string
 	discordToken  = flag.String("token", "", "Discord bot secret")
 	apiToken      = flag.String("apikey", "", "openweathermap api key")
-	commandPrefix = "!"
+	commandPrefix = "/"
 )
 
 func main() {
