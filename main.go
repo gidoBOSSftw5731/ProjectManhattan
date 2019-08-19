@@ -90,6 +90,12 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 			}
 			log.Traceln(w)
 
+			if w.Cod = 0 {
+				log.Errorln("Recieved invalid response from OWM, try again and check spelling")
+				discord.ChannelMessageSend(message.ChannelID, "Internal Error! \n"+fmt.Sprint(err))
+				return
+			}
+
 			embed := &discordgo.MessageEmbed{
 				Title:       fmt.Sprintf("Weather in %v (%v, %v) right now", w.Name, w.Coord.Lat, w.Coord.Lon),
 				Author:      &discordgo.MessageEmbedAuthor{},
