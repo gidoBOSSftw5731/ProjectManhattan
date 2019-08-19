@@ -90,18 +90,30 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 			log.Traceln(w)
 
 			embed := &discordgo.MessageEmbed{
+				Title:       fmt.Sprintf("Weather in %v (%v, %v) right now", w.Name, w.Coord.Lat, w.Coord.Lon),
 				Author:      &discordgo.MessageEmbedAuthor{},
 				Color:       0x00ff00, // Green
 				Description: "All measurements in metric",
 				Fields: []*discordgo.MessageEmbedField{
 					&discordgo.MessageEmbedField{
-						Name:   "tempuature",
+						Name: "Conditions",
+						Value: fmt.Sprintf("%v: %v \n Cloud percentage: %v",
+							w.Weather[0].Main, w.Weather[0].Description, w.Clouds.All),
+						Inline: true,
+					},
+					&discordgo.MessageEmbedField{
+						Name:   "Tempuature :thermometer:",
 						Value:  fmt.Sprint(w.Main.Temp),
 						Inline: true,
 					},
 					&discordgo.MessageEmbedField{
-						Name:   "Wind Speed",
-						Value:  fmt.Sprint(w.Wind.Speed),
+						Name:   "Humidity",
+						Value:  fmt.Sprint(w.Main.Humidity),
+						Inline: true,
+					},
+					&discordgo.MessageEmbedField{
+						Name:   "Wind :wind_blowing_face:",
+						Value:  fmt.Sprintf("Speed: %v, Direction (degrees): %v", w.Wind.Speed, w.Wind.Deg),
 						Inline: true,
 					},
 				},
@@ -112,7 +124,6 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 					URL: "https://cdn.discordapp.com/avatars/119249192806776836/cc32c5c3ee602e1fe252f9f595f9010e.jpg?size=2048",
 				},
 				Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
-				Title:     "I am an Embed",
 			}
 
 			resp, err := discord.ChannelMessageSendEmbed(message.ChannelID, embed)
