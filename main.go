@@ -70,7 +70,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		commandContents := strings.Split(message.Content, " ") // 0 = !command, 1 = first arg, etc
 		if len(commandContents) < 2 {
 			log.Errorln("didnt supply both a city and state or a zipcode")
-			discord.ChannelMessageSend(message.ChannelID, "Error in formatting!")
+			//discord.ChannelMessageSend(message.ChannelID, "Error in formatting!")
 			return
 		}
 
