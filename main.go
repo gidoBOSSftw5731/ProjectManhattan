@@ -18,6 +18,7 @@ var (
 	discordToken  = flag.String("token", "", "Discord bot secret")
 	apiToken      = flag.String("apikey", "", "openweathermap api key")
 	commandPrefix = "/"
+	author        = ""
 )
 
 func main() {
@@ -141,7 +142,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 			}
 		default:
 			log.Errorln("invalid command!")
-			discord.ChannelMessageSend(message.ChannelID, "Invalid command!")
+			//discord.ChannelMessageSend(message.ChannelID, "Invalid command!")
 			return
 		}
 	}
