@@ -121,7 +121,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 					},
 					&discordgo.MessageEmbedField{
 						Name:   "Wind :wind_blowing_face:",
-						Value:  fmt.Sprintf("Speed: %v, Direction (degrees): %v", w.Wind.Speed, w.Wind.Deg),
+						Value:  fmt.Sprintf("Speed (meters/second): %v, Direction (degrees): %v", w.Wind.Speed, w.Wind.Deg),
 						Inline: true,
 					},
 				},
